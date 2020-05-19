@@ -1,8 +1,9 @@
 public class CalculatorMain {
+    static ConsoleReader reader = new ConsoleReader();
+
     public static void main(String[] args) {
-        ConsoleReader reader = new ConsoleReader();
-        CalculatorInterface calculatorInterface = new LocalCalculator();//ask user about which calculator he want to use
         do {
+            CalculatorInterface calculatorInterface = choosenCalculator();
             Formula formula = reader.readNext();
             if (formula.getSign() == "+".charAt(0)) {
                 formula.setResult(calculatorInterface.combine(formula.x, formula.y));
@@ -18,7 +19,19 @@ public class CalculatorMain {
             }
             System.out.println("Result of calculation is: " + formula.result);
 
-
         } while (reader.hasNext());
+    }
+
+    public static CalculatorInterface choosenCalculator() {
+        int result = reader.selectCalculator();
+        switch (result) {
+            case 1:
+                return new LocalCalculator();
+            case 2:
+                return new GoogleCalculator();
+            default:
+                System.out.println("Error. Local Calculator will start");
+                return new LocalCalculator();
+        }
     }
 }

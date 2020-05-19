@@ -22,4 +22,10 @@ public class ConsoleReader implements ReaderInterface {
         formula.setY(scanner.nextDouble());
         return formula;
     }
+
+    public int selectCalculator(){
+        System.out.println("Choose you calculator. Type 1 if you want local Calculator." +
+                "Type 2 if you want Google calculator");
+        return scanner.nextInt();
+    }
 }
