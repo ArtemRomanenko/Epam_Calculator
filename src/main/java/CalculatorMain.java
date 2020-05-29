@@ -3,7 +3,7 @@ public class CalculatorMain {
 
     public static void main(String[] args) {
         do {
-            CalculatorInterface calculatorInterface = choosenCalculator();
+            CalculatorInterface calculatorInterface = chosenCalculator();
             Formula formula = reader.readNext();
             if (formula.getSign() == "+".charAt(0)) {
                 formula.setResult(calculatorInterface.combine(formula.x, formula.y));
@@ -22,13 +22,15 @@ public class CalculatorMain {
         } while (reader.hasNext());
     }
 
-    public static CalculatorInterface choosenCalculator() {
+    public static CalculatorInterface chosenCalculator() {
         int result = reader.selectCalculator();
         switch (result) {
             case 1:
                 return new LocalCalculator();
             case 2:
                 return new GoogleCalculator();
+            case 3:
+                return new WebCalculator();
             default:
                 System.out.println("Error. Local Calculator will start");
                 return new LocalCalculator();
