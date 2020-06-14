@@ -1,3 +1,5 @@
+package mentoringProgram.calculatorLogic;
+
 public class Formula {
     Double x;
     Double y;
@@ -38,11 +40,6 @@ public class Formula {
 
     @Override
     public String toString() {
-        return "Formula{" +
-                "x=" + x +
-                ", y=" + y +
-                ", sign=" + sign +
-                ", result=" + result +
-                '}';
+        return String.format("Formula: x=%s, y=%s, sign=%s, result=%s", x, y, sign, result);
     }
 }
