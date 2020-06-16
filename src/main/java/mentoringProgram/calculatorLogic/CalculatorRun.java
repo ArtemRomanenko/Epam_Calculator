@@ -29,6 +29,8 @@ public class CalculatorRun {
                 return new IframeCalculator();
             case 6:
                 return new DerivativeCalculator();
+            case 7:
+                return new CalculatorJS();
             default:
                 System.out.println("Error. Local Calculator will start");
                 return new LocalCalculator();
