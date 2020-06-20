@@ -31,6 +31,8 @@ public class CalculatorMain {
                 return new GoogleCalculator();
             case 3:
                 return new WebCalculator();
+            case 4:
+                return new ApiCalculator();
             default:
                 System.out.println("Error. Local Calculator will start");
                 return new LocalCalculator();

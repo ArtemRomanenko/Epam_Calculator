@@ -25,7 +25,8 @@ public class ConsoleReader implements ReaderInterface {
 
     public int selectCalculator(){
         System.out.println("Choose you calculator. Type 1 if you want local Calculator." +
-                "Type 2 if you want Google calculator. Type 3 if you want Web calculator");
+                "Type 2 if you want Google calculator. Type 3 if you want Web calculator. " +
+                "Type 4 if you want Api Calculator");
         return scanner.nextInt();
     }
 }
