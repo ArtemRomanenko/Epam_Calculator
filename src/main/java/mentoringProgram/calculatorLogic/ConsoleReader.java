@@ -8,7 +8,7 @@ public class ConsoleReader implements ReaderInterface {
     Scanner scanner = new Scanner(System.in);
 
     public Boolean hasNext() {
-        System.out.println("would you like to calculate again y/n");
+        System.out.println("would you like to calculate again with this calculation logic y/n");
         scanner.nextLine();
         String userAnswer = scanner.nextLine();
         if (userAnswer.equals("y")) {
