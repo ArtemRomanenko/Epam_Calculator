@@ -30,7 +30,8 @@ public class ConsoleReader implements ReaderInterface {
     public Integer selectCalculator() {
         System.out.println("Choose your calculator:" + "\n" + "Type 1 if you want local Calculator." +
                 "\n" + "Type 2 if you want Google calculator." + "\n" + "Type 3 if you want Web calculator."
-                + "\n" + "Type 4 if you want Calculator Pi." + "\n" + "Type 5 if you want iFrame Calculator");
+                + "\n" + "Type 4 if you want Calculator Pi." + "\n" + "Type 5 if you want iFrame Calculator"
+                        +"\n"+ "Type 6 if you want Derivative calculator");
         return scanner.nextInt();
     }
 }
