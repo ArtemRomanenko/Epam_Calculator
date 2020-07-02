@@ -2,39 +2,44 @@ package mentoringProgram.calculatorLogic;
 
 import mentoringProgram.calculators.*;
 import mentoringProgram.interfacePackage.CalculatorInterface;
+import mentoringProgram.interfacePackage.ReaderInterface;
 
 import java.util.Scanner;
 
 public class CalculatorRun {
-    private static ConsoleReader reader = new ConsoleReader();
-    private static MailReader mailReader = new MailReader();
-    private static int calculatorChoice;
+    private static final ConsoleReader reader = new ConsoleReader();
+    private static final MailReader mailReader = new MailReader();
 
     public void run() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Choose Calculator Logic:" + "\n" + "1. Console Calculator"
-                + "\n" + "2. Mail Calculator");
-        int calculatorLogic = scan.nextInt();
-        switch (calculatorLogic) {
-            case 1:
-                calculatorChoice = 1;
-                consoleCalculator();
-                break;
-            case 2:
-                mailCalculator();
-                break;
-            default:
-                System.out.println("Error. You need to choose between option 1 and 2");
+        calculation(calculationLogic());
+    }
+
+    private void calculation(ReaderInterface readerInterface) {
+        while (readerInterface.hasNext()) {
+            Calculator calculator = new Calculator(chosenCalculator(readerInterface));
+            Formula formula = readerInterface.readNext();
+            calculator.calculate(formula);
         }
     }
 
-    private static CalculatorInterface chosenCalculator() {
-        int result;
-        if (calculatorChoice == 1) {
-            result = reader.selectCalculator();
-        } else {
-            result = mailReader.selectCalculator();
+    private ReaderInterface calculationLogic() {
+        ReaderInterface readerInterface;
+        switch (calculatorType()) {
+            case 1:
+                readerInterface = reader;
+                break;
+            case 2:
+                readerInterface = mailReader;
+                break;
+            default:
+                throw new IllegalArgumentException("Error. You need to choose between option 1 and 2");
         }
+        return readerInterface;
+    }
+
+    private static CalculatorInterface chosenCalculator(ReaderInterface readerInterface) {
+        int result;
+        result = readerInterface.selectCalculator();
         switch (result) {
             case 1:
                 return new LocalCalculator();
@@ -56,19 +61,11 @@ public class CalculatorRun {
         }
     }
 
-    private void consoleCalculator() {
-        do {
-            Calculator calculator = new Calculator(chosenCalculator());
-            Formula formula = reader.readNext();
-            calculator.calculate(formula);
-        } while (reader.hasNext());
-    }
-
-    private void mailCalculator() {
-        do {
-            Calculator calculator = new Calculator(chosenCalculator());
-            Formula formula = mailReader.readNext();
-            calculator.calculate(formula);
-        } while (mailReader.hasNext());
+    private int calculatorType() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Choose Calculator Logic:\n" +
+                "1. Console Calculator\n" +
+                "2. Mail Calculator");
+        return scan.nextInt();
     }
 }

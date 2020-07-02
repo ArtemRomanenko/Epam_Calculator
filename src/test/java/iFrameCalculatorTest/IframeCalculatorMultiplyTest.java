@@ -11,7 +11,7 @@ public class IframeCalculatorMultiplyTest {
     IframeCalculator iframeCalculator;
 
     @BeforeMethod
-    public void initialization(){
+    public void initialization() {
         iframeCalculator = new IframeCalculator();
     }
 

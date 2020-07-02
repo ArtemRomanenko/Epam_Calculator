@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class GoogleCalculator implements CalculatorInterface {
+    private WebDriver driver;
 
     public GoogleCalculator() {
         WebDriverManager.chromedriver().setup();
@@ -17,15 +18,13 @@ public class GoogleCalculator implements CalculatorInterface {
         PageFactory.initElements(driver, this);
     }
 
-    private WebDriver driver;
-
     @FindBy(name = "q")
     private WebElement searchingField;
 
     @FindBy(id = "cwos")
     private WebElement resultField;
 
-    public void closeBrowser() {
+    private void closeBrowser() {
         driver.quit();
     }
 

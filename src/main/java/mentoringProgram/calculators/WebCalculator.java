@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebCalculator implements CalculatorInterface {
+    private final WebDriver driver;
 
     public WebCalculator() {
         WebDriverManager.chromedriver().setup();
@@ -19,8 +20,6 @@ public class WebCalculator implements CalculatorInterface {
         startDriver();
         PageFactory.initElements(driver, this);
     }
-
-    private WebDriver driver;
 
     @FindBy(id = "input")
     private WebElement inputField;
@@ -43,7 +42,7 @@ public class WebCalculator implements CalculatorInterface {
     @FindBy(xpath = "//button[@name = 'cookies']")
     private WebElement cookiesBanner;
 
-    public void closeBrowser() {
+    private void closeBrowser() {
         driver.quit();
     }
 
@@ -97,7 +96,27 @@ public class WebCalculator implements CalculatorInterface {
     private Double calculation(double a, double b, char sign) {
         closeCookiesBanner();
         webCalculation(a);
-        switch (sign) {
+        signClick(sign);
+        if (b == 0.0) {
+            throw new ArithmeticException("You cannot divide by zero");
+        }
+        webCalculation(b);
+        calcButton.click();
+        waitForResult();
+        double result = Double.parseDouble(inputField.getAttribute("value"));
+        closeBrowser();
+        return result;
+    }
+
+    private void closeCookiesBanner() {
+        driver.findElement(By.id("BtnDot")).click();
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.elementToBeClickable(cookiesBanner)).click();
+        driver.navigate().refresh();
+    }
+
+    private void signClick(char userSign) {
+        switch (userSign) {
             case '+':
                 plusButton.click();
                 break;
@@ -111,25 +130,13 @@ public class WebCalculator implements CalculatorInterface {
                 divideButton.click();
                 break;
         }
-        if (b == 0.0) {
-            throw new ArithmeticException("You cannot divide by zero");
-        }
-        webCalculation(b);
-        calcButton.click();
+    }
+
+    private void waitForResult(){
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        double result = Double.parseDouble(inputField.getAttribute("value"));
-        closeBrowser();
-        return result;
-    }
-
-    private void closeCookiesBanner() {
-        driver.findElement(By.id("BtnDot")).click();
-        WebDriverWait wait = new WebDriverWait(driver, 3);
-        wait.until(ExpectedConditions.elementToBeClickable(cookiesBanner)).click();
-        driver.navigate().refresh();
     }
 }

@@ -11,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class CalculatorPi implements CalculatorInterface {
+    private WebDriver driver;
 
     public CalculatorPi() {
         WebDriverManager.chromedriver().setup();
@@ -18,8 +19,6 @@ public class CalculatorPi implements CalculatorInterface {
         startDriver();
         PageFactory.initElements(driver, this);
     }
-
-    private WebDriver driver;
 
     @FindBy(xpath = "//td[@class='keyb']/button[contains(text(),'+')]")
     private WebElement plusButton;
@@ -42,7 +41,7 @@ public class CalculatorPi implements CalculatorInterface {
     @FindBy(xpath = "//*[@class = 'btn_num' and contains(text(), '•')]")
     private WebElement dotButton;
 
-    public void closeBrowser() {
+    private void closeBrowser() {
         driver.quit();
     }
 
@@ -103,7 +102,19 @@ public class CalculatorPi implements CalculatorInterface {
 
     private Double calculation(double a, double b, char sign) {
         webCalculation(a);
-        switch (sign) {
+        signClick(sign);
+        if (b == 0.0) {
+            throw new ArithmeticException("You cannot divide by zero");
+        }
+        webCalculation(b);
+        hoverAndClick(calcButton);
+        double result = Double.parseDouble(resultField.getText());
+        closeBrowser();
+        return result;
+    }
+
+    private Character signClick(char userSign){
+        switch (userSign) {
             case '+':
                 hoverAndClick(plusButton);
                 break;
@@ -117,13 +128,6 @@ public class CalculatorPi implements CalculatorInterface {
                 hoverAndClick(divideButton);
                 break;
         }
-        if (b == 0.0) {
-            throw new ArithmeticException("You cannot divide by zero");
-        }
-        webCalculation(b);
-        hoverAndClick(calcButton);
-        double result = Double.parseDouble(resultField.getText());
-        closeBrowser();
-        return result;
+        return userSign;
     }
 }
