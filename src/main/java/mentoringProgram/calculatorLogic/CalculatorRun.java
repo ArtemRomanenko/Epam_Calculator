@@ -55,6 +55,8 @@ public class CalculatorRun {
                 return new DerivativeCalculator();
             case 7:
                 return new CalculatorJS();
+            case 8:
+                return new CalculatorApi();
             default:
                 System.out.println("Error. Local Calculator will start");
                 return new LocalCalculator();
