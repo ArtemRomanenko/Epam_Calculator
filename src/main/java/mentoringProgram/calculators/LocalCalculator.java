@@ -1,3 +1,7 @@
+package mentoringProgram.calculators;
+
+import mentoringProgram.interfacePackage.CalculatorInterface;
+
 public class LocalCalculator implements CalculatorInterface {
 
     public Double combine(Double x, Double y) {
@@ -14,7 +18,7 @@ public class LocalCalculator implements CalculatorInterface {
 
     public Double divide(Double x, Double y) {
         try {
-            if (y == 0) {
+            if (y == 0.0) {
                 throw new ArithmeticException();
             }
         } catch (Exception e) {

@@ -1,3 +1,7 @@
+package mentoringProgram.calculatorLogic;
+
+import mentoringProgram.interfacePackage.ReaderInterface;
+
 import java.util.Scanner;
 
 public class ConsoleReader implements ReaderInterface {
@@ -23,10 +27,10 @@ public class ConsoleReader implements ReaderInterface {
         return formula;
     }
 
-    public int selectCalculator(){
-        System.out.println("Choose you calculator. Type 1 if you want local Calculator." +
-                "Type 2 if you want Google calculator. Type 3 if you want Web calculator. " +
-                "Type 4 if you want Api Calculator");
+    public Integer selectCalculator() {
+        System.out.println("Choose your calculator:" + "\n" + "Type 1 if you want local Calculator." +
+                "\n" + "Type 2 if you want Google calculator." + "\n" + "Type 3 if you want Web calculator."
+                + "\n" + "Type 4 if you want Calculator Pi." + "\n" + "Type 5 if you want iFrame Calculator");
         return scanner.nextInt();
     }
 }
