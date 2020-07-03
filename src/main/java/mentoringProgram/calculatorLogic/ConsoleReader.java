@@ -31,7 +31,8 @@ public class ConsoleReader implements ReaderInterface {
                 "5 iFrame Calculator.\n" +
                 "6 Derivative calculator.\n" +
                 "7 CalculatorJS.\n" +
-                "8 Calculator API");
+                "8 Calculator API.\n" +
+                "9 Calculator API Rest.");
         return scanner.nextInt();
     }
 }

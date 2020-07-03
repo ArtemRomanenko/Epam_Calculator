@@ -57,6 +57,8 @@ public class CalculatorRun {
                 return new CalculatorJS();
             case 8:
                 return new CalculatorApi();
+            case 9:
+                return new CalculatorApiRest();
             default:
                 System.out.println("Error. Local Calculator will start");
                 return new LocalCalculator();
