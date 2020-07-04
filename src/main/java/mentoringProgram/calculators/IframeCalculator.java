@@ -10,18 +10,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class IframeCalculator implements CalculatorInterface {
+    private WebDriver driver;
 
     public IframeCalculator() {
         WebDriverManager.chromedriver().setup();
         this.driver = new ChromeDriver();
         startDriver();
         PageFactory.initElements(driver, this);
-    }
-
-    private WebDriver driver;
-
-    private void startDriver() {
-        driver.get("https://calculator-1.com/widgets/");
     }
 
     @FindBy(xpath = "//td[@id='bt_pl']")
@@ -54,6 +49,10 @@ public class IframeCalculator implements CalculatorInterface {
     @FindBy(xpath = "//td[@id='bt_pm']")
     private WebElement plsMnsButton;
 
+    private void startDriver() {
+        driver.get("https://calculator-1.com/widgets/");
+    }
+
     private void closeBrowser() {
         driver.quit();
     }
@@ -75,6 +74,7 @@ public class IframeCalculator implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
+        checkDivideByZero(y);
         return calculation(x, y, '/');
     }
 
@@ -113,9 +113,6 @@ public class IframeCalculator implements CalculatorInterface {
         driver.switchTo().frame(iFrame);
         webCalculation(a);
         signClick(sign);
-        if (b == 0.0) {
-            throw new ArithmeticException("You cannot divide by zero");
-        }
         webCalculation(b);
         userSignClick(calcButton);
         double result = Double.parseDouble(resultField.getAttribute("value"));
@@ -123,7 +120,7 @@ public class IframeCalculator implements CalculatorInterface {
         return result;
     }
 
-    private Character signClick(char userSign) {
+    private void signClick(char userSign) {
         switch (userSign) {
             case '+':
                 userSignClick(plusButton);
@@ -138,6 +135,12 @@ public class IframeCalculator implements CalculatorInterface {
                 userSignClick(divideButton);
                 break;
         }
-        return userSign;
+    }
+
+    private void checkDivideByZero(double ifZero) {
+        if (ifZero == 0) {
+            closeBrowser();
+            throw new ArithmeticException("You cannot divide by zero");
+        }
     }
 }

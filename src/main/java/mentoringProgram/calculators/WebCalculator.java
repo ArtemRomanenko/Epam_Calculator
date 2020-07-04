@@ -37,7 +37,7 @@ public class WebCalculator implements CalculatorInterface {
     private WebElement divideButton;
 
     @FindBy(id = "BtnCalc")
-    private WebElement calcButton;
+    private WebElement calculationButton;
 
     @FindBy(xpath = "//button[@name = 'cookies']")
     private WebElement cookiesBanner;
@@ -63,6 +63,7 @@ public class WebCalculator implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
+        checkDivideByZero(y);
         return calculation(x, y, '/');
     }
 
@@ -93,15 +94,12 @@ public class WebCalculator implements CalculatorInterface {
         return userInput.split("(?!^)");
     }
 
-    private Double calculation(double a, double b, char sign) {
+    private Double calculation(double firstDigit, double secondDigit, char sign) {
         closeCookiesBanner();
-        webCalculation(a);
+        webCalculation(firstDigit);
         signClick(sign);
-        if (b == 0.0) {
-            throw new ArithmeticException("You cannot divide by zero");
-        }
-        webCalculation(b);
-        calcButton.click();
+        webCalculation(secondDigit);
+        calculationButton.click();
         waitForResult();
         double result = Double.parseDouble(inputField.getAttribute("value"));
         closeBrowser();
@@ -132,11 +130,18 @@ public class WebCalculator implements CalculatorInterface {
         }
     }
 
-    private void waitForResult(){
+    private void waitForResult() {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void checkDivideByZero(double ifZero) {
+        if (ifZero == 0) {
+            closeBrowser();
+            throw new ArithmeticException("You cannot divide by zero");
         }
     }
 }

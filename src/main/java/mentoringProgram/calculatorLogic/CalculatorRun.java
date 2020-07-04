@@ -7,8 +7,8 @@ import mentoringProgram.interfacePackage.ReaderInterface;
 import java.util.Scanner;
 
 public class CalculatorRun {
-    private static final ConsoleReader reader = new ConsoleReader();
-    private static final MailReader mailReader = new MailReader();
+    private static final ConsoleReader READER = new ConsoleReader();
+    private static final MailReader MAIL_READER = new MailReader();
 
     public void run() {
         calculation(calculationLogic());
@@ -26,10 +26,10 @@ public class CalculatorRun {
         ReaderInterface readerInterface;
         switch (calculatorType()) {
             case 1:
-                readerInterface = reader;
+                readerInterface = READER;
                 break;
             case 2:
-                readerInterface = mailReader;
+                readerInterface = MAIL_READER;
                 break;
             default:
                 throw new IllegalArgumentException("Error. You need to choose between option 1 and 2");

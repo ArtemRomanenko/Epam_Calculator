@@ -62,6 +62,7 @@ public class CalculatorPi implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
+        checkDivideByZero(y);
         return calculation(x, y, '/');
     }
 
@@ -103,9 +104,6 @@ public class CalculatorPi implements CalculatorInterface {
     private Double calculation(double a, double b, char sign) {
         webCalculation(a);
         signClick(sign);
-        if (b == 0.0) {
-            throw new ArithmeticException("You cannot divide by zero");
-        }
         webCalculation(b);
         hoverAndClick(calcButton);
         double result = Double.parseDouble(resultField.getText());
@@ -113,7 +111,7 @@ public class CalculatorPi implements CalculatorInterface {
         return result;
     }
 
-    private Character signClick(char userSign){
+    private void signClick(char userSign) {
         switch (userSign) {
             case '+':
                 hoverAndClick(plusButton);
@@ -128,6 +126,12 @@ public class CalculatorPi implements CalculatorInterface {
                 hoverAndClick(divideButton);
                 break;
         }
-        return userSign;
+    }
+
+    private void checkDivideByZero(double ifZero) {
+        if (ifZero == 0) {
+            closeBrowser();
+            throw new ArithmeticException("You cannot divide by zero");
+        }
     }
 }

@@ -48,14 +48,7 @@ public class GoogleCalculator implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
-        try {
-            if (y == 0.0) {
-                throw new ArithmeticException();
-            }
-        } catch (Exception e) {
-            System.out.println("You cannot divide by zero");
-            return null;
-        }
+        checkDivideByZero(y);
         searchingField.clear();
         return calculationMethod(x, y, "/");
     }
@@ -72,5 +65,12 @@ public class GoogleCalculator implements CalculatorInterface {
         double result = Double.parseDouble(resultField.getText());
         closeBrowser();
         return result;
+    }
+
+    private void checkDivideByZero(double ifZero) {
+        if (ifZero == 0) {
+            closeBrowser();
+            throw new ArithmeticException("You cannot divide by zero");
+        }
     }
 }

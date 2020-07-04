@@ -32,6 +32,7 @@ public class CalculatorJS implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
+        checkDivideByZero(y);
         return calculationMethod(x, y, "/");
     }
 
@@ -39,19 +40,32 @@ public class CalculatorJS implements CalculatorInterface {
         driver.get("https://www.google.com/");
     }
 
-    private Double calculationMethod(double a, double b, String sign) {
-        String firstDigit = String.valueOf(a);
-        String secondDigit = String.valueOf(b);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        if (secondDigit.contains("0.0")) {
-            System.out.println("You cannot divide by zero");
-            return null;
-        } else if (secondDigit.contains("-")) {
-            secondDigit = "(" + secondDigit + ")";
-        }
-        String result = js.executeScript("return document.value = (" + firstDigit + sign + secondDigit + ")")
-                .toString();
+    private void closeBrowser(){
         driver.quit();
+    }
+
+    private Double calculationMethod(double firstDigit, double secondDigit, String sign) {
+        String secondInput = String.valueOf(secondDigit);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String result = js.executeScript("return document.value = (" + firstDigit + sign
+                + checkNegativeDigit(secondInput) + ")")
+                .toString();
+        closeBrowser();
         return Double.parseDouble(result);
+    }
+
+    private String checkNegativeDigit(String userInput) {
+        String userDigit = userInput;
+        if (userInput.contains("-")) {
+            userDigit = "(" + userInput + ")";
+        }
+        return userDigit;
+    }
+
+    private void checkDivideByZero(double ifZero) {
+        if (ifZero == 0) {
+            closeBrowser();
+            throw new ArithmeticException("You cannot divide by zero");
+        }
     }
 }

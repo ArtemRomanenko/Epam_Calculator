@@ -10,6 +10,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class CalculatorApiRest implements CalculatorInterface {
+    private final String EXPRESSION = "expr";
     private final Map<String, Object> requestBody = new HashMap<>();
     private final RequestSpecification requestSpecification = given()
             .contentType(ContentType.JSON)
@@ -32,12 +33,13 @@ public class CalculatorApiRest implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
+        checkDivideByZero(y);
         return calculationRequest(createUserRequest(x, y, "/"));
     }
 
     private Map<String, Object> createUserRequest(double firstDigit, double secondDigit, String userSign) {
         String userRequest = firstDigit + userSign + secondDigit;
-        requestBody.put("expr", userRequest);
+        requestBody.put(EXPRESSION, userRequest);
         return requestBody;
     }
 
@@ -46,8 +48,13 @@ public class CalculatorApiRest implements CalculatorInterface {
                 .body(userRequest)
                 .post()
                 .jsonPath()
-                .get("result")
-                .toString().replaceAll("[ ]", "");
+                .get("result");
         return Double.parseDouble(response);
+    }
+
+    private void checkDivideByZero(double ifZero) {
+        if (ifZero == 0) {
+            throw new ArithmeticException("You cannot divide by zero");
+        }
     }
 }
