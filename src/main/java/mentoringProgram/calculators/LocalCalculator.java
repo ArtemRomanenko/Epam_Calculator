@@ -17,13 +17,13 @@ public class LocalCalculator implements CalculatorInterface {
     }
 
     public Double divide(Double x, Double y) {
-        try {
-            if (y == 0.0) {
-                throw new ArithmeticException();
-            }
-        } catch (Exception e) {
-            System.out.println("You cannot divide by zero");
-        }
+        checkDivideByZero(y);
         return x / y;
+    }
+
+    private void checkDivideByZero(double ifZero) {
+        if (ifZero == 0) {
+            throw new ArithmeticException("You cannot divide by zero");
+        }
     }
 }

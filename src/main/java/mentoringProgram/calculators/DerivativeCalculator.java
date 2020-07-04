@@ -50,14 +50,7 @@ public class DerivativeCalculator implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
-        try {
-            if (y == 0.0) {
-                throw new ArithmeticException();
-            }
-        } catch (Exception e) {
-            System.out.println("You cannot divide by zero");
-            return null;
-        }
+        checkDivideByZero(y);
         return calculationMethod(x, y, "/");
     }
 
@@ -72,9 +65,16 @@ public class DerivativeCalculator implements CalculatorInterface {
         inputField.sendKeys(Double.toString(secondDigit));
         calcButton.click();
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(resultField));
-        String calRes = resultField.getText().replaceAll("−\n", "-");
-        double result = Double.parseDouble(calRes);
+        String calculationResult = resultField.getText().replaceAll("−\n", "-");
+        double result = Double.parseDouble(calculationResult);
         closeBrowser();
         return result;
+    }
+
+    private void checkDivideByZero(double ifZero) {
+        if (ifZero == 0) {
+            closeBrowser();
+            throw new ArithmeticException("You cannot divide by zero");
+        }
     }
 }
