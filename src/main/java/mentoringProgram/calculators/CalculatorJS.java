@@ -1,12 +1,13 @@
 package mentoringProgram.calculators;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import mentoringProgram.calculatorLogic.ErrorHandler;
 import mentoringProgram.interfacePackage.CalculatorInterface;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class CalculatorJS implements CalculatorInterface {
+public class CalculatorJS extends ErrorHandler implements CalculatorInterface {
     private WebDriver driver;
 
     public CalculatorJS() {
@@ -32,7 +33,7 @@ public class CalculatorJS implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
-        checkDivideByZero(y);
+        divisionByZeroCheck(y);
         return calculationMethod(x, y, "/");
     }
 
@@ -48,24 +49,17 @@ public class CalculatorJS implements CalculatorInterface {
         String secondInput = String.valueOf(secondDigit);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String result = js.executeScript("return document.value = (" + firstDigit + sign
-                + checkNegativeDigit(secondInput) + ")")
+                + negativeDigitHandler(secondInput) + ")")
                 .toString();
         closeBrowser();
         return Double.parseDouble(result);
     }
 
-    private String checkNegativeDigit(String userInput) {
+    private String negativeDigitHandler(String userInput) {
         String userDigit = userInput;
         if (userInput.contains("-")) {
             userDigit = "(" + userInput + ")";
         }
         return userDigit;
-    }
-
-    private void checkDivideByZero(double ifZero) {
-        if (ifZero == 0) {
-            closeBrowser();
-            throw new ArithmeticException("You cannot divide by zero");
-        }
     }
 }

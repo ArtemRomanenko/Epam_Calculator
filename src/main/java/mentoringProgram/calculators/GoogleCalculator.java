@@ -1,6 +1,7 @@
 package mentoringProgram.calculators;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import mentoringProgram.calculatorLogic.ErrorHandler;
 import mentoringProgram.interfacePackage.CalculatorInterface;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,7 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class GoogleCalculator implements CalculatorInterface {
+public class GoogleCalculator extends ErrorHandler implements CalculatorInterface {
     private WebDriver driver;
 
     public GoogleCalculator() {
@@ -48,7 +49,7 @@ public class GoogleCalculator implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
-        checkDivideByZero(y);
+        divisionByZeroCheck(y);
         searchingField.clear();
         return calculationMethod(x, y, "/");
     }
@@ -65,12 +66,5 @@ public class GoogleCalculator implements CalculatorInterface {
         double result = Double.parseDouble(resultField.getText());
         closeBrowser();
         return result;
-    }
-
-    private void checkDivideByZero(double ifZero) {
-        if (ifZero == 0) {
-            closeBrowser();
-            throw new ArithmeticException("You cannot divide by zero");
-        }
     }
 }

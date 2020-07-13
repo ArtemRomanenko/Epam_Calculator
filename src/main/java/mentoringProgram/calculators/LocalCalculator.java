@@ -17,13 +17,7 @@ public class LocalCalculator implements CalculatorInterface {
     }
 
     public Double divide(Double x, Double y) {
-        checkDivideByZero(y);
         return x / y;
     }
 
-    private void checkDivideByZero(double ifZero) {
-        if (ifZero == 0) {
-            throw new ArithmeticException("You cannot divide by zero");
-        }
-    }
 }

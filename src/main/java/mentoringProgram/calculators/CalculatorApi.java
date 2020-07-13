@@ -30,7 +30,6 @@ public class CalculatorApi implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
-        checkDivideByZero(y);
         return calculationResult(createRequest(x, y, "/"));
     }
 
@@ -54,11 +53,5 @@ public class CalculatorApi implements CalculatorInterface {
             e.printStackTrace();
         }
         return result;
-    }
-
-    private void checkDivideByZero(double ifZero) {
-        if (ifZero == 0) {
-            throw new ArithmeticException("You cannot divide by zero");
-        }
     }
 }

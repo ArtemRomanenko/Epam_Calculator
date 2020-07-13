@@ -48,13 +48,12 @@ public class MailReader implements ReaderInterface {
     @Override
     public Boolean hasNext() {
         goToMailBox();
-        if (!mails.isEmpty()){
-            return true;
-        } else {
+        if (mails.isEmpty()) {
             System.out.println("Mail box is empty. There is nothing to calculate");
             driver.quit();
             return false;
         }
+        return true;
     }
 
     @Override

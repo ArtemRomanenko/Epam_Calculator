@@ -1,6 +1,7 @@
 package mentoringProgram.calculators;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import mentoringProgram.calculatorLogic.ErrorHandler;
 import mentoringProgram.interfacePackage.CalculatorInterface;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,7 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class CalculatorPi implements CalculatorInterface {
+public class CalculatorPi extends ErrorHandler implements CalculatorInterface {
     private WebDriver driver;
 
     public CalculatorPi() {
@@ -62,7 +63,7 @@ public class CalculatorPi implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
-        checkDivideByZero(y);
+        divisionByZeroCheck(y);
         return calculation(x, y, '/');
     }
 
@@ -125,13 +126,6 @@ public class CalculatorPi implements CalculatorInterface {
             case '/':
                 hoverAndClick(divideButton);
                 break;
-        }
-    }
-
-    private void checkDivideByZero(double ifZero) {
-        if (ifZero == 0) {
-            closeBrowser();
-            throw new ArithmeticException("You cannot divide by zero");
         }
     }
 }
