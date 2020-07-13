@@ -2,6 +2,7 @@ package mentoringProgram.calculators;
 
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import mentoringProgram.calculatorLogic.ErrorHandler;
 import mentoringProgram.interfacePackage.CalculatorInterface;
 
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
-public class CalculatorApiRest implements CalculatorInterface {
+public class CalculatorApiRest extends ErrorHandler implements CalculatorInterface {
     private final String EXPRESSION = "expr";
     private final Map<String, Object> requestBody = new HashMap<>();
     private final RequestSpecification requestSpecification = given()
@@ -33,7 +34,7 @@ public class CalculatorApiRest implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
-        checkDivideByZero(y);
+        divisionByZeroCheck(y);
         return calculationRequest(createUserRequest(x, y, "/"));
     }
 
@@ -50,11 +51,5 @@ public class CalculatorApiRest implements CalculatorInterface {
                 .jsonPath()
                 .get("result");
         return Double.parseDouble(response);
-    }
-
-    private void checkDivideByZero(double ifZero) {
-        if (ifZero == 0) {
-            throw new ArithmeticException("You cannot divide by zero");
-        }
     }
 }

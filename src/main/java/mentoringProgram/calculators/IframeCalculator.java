@@ -1,6 +1,7 @@
 package mentoringProgram.calculators;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import mentoringProgram.calculatorLogic.ErrorHandler;
 import mentoringProgram.interfacePackage.CalculatorInterface;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class IframeCalculator implements CalculatorInterface {
+public class IframeCalculator extends ErrorHandler implements CalculatorInterface {
     private WebDriver driver;
 
     public IframeCalculator() {
@@ -74,7 +75,7 @@ public class IframeCalculator implements CalculatorInterface {
 
     @Override
     public Double divide(Double x, Double y) {
-        checkDivideByZero(y);
+        divisionByZeroCheck(y);
         return calculation(x, y, '/');
     }
 
@@ -134,13 +135,6 @@ public class IframeCalculator implements CalculatorInterface {
             case '/':
                 userSignClick(divideButton);
                 break;
-        }
-    }
-
-    private void checkDivideByZero(double ifZero) {
-        if (ifZero == 0) {
-            closeBrowser();
-            throw new ArithmeticException("You cannot divide by zero");
         }
     }
 }
