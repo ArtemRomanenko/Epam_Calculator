@@ -10,7 +10,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class MailReader implements ReaderInterface {
@@ -43,13 +42,13 @@ public class MailReader implements ReaderInterface {
     @FindBy(xpath = "//button[@title = 'Delete Emails']")
     private WebElement deleteButton;
 
-    @FindBy (xpath = "//button[@id = 'go-to-public']")
+    @FindBy(xpath = "//button[@id = 'go-to-public']")
     private WebElement goButton;
 
     @Override
     public Boolean hasNext() {
-        Iterator iterator = mails.iterator();
-        return iterator.hasNext();
+        goToMailBox();
+        return !mails.isEmpty();
     }
 
     @Override
@@ -58,14 +57,16 @@ public class MailReader implements ReaderInterface {
         formula.setX(Double.parseDouble(firstUserDigit.getText()));
         formula.setY(Double.parseDouble(secondUserDigit.getText()));
         formula.setSign(userSign.getText().charAt(0));
-        driver.navigate().back();
         deleteMail();
         return formula;
     }
 
     @Override
     public Integer selectCalculator() {
-        goToMailBox();
+        mails.get(0).click();
+        driver.switchTo().frame(iFrame);
+        new WebDriverWait(driver, 3)
+                .until(ExpectedConditions.visibilityOf(selectedCalculator));
         return Integer.parseInt(selectedCalculator.getText());
     }
 
@@ -81,27 +82,12 @@ public class MailReader implements ReaderInterface {
         driver.get("https://www.mailinator.com/");
         enterInbox.sendKeys("Mentorpampam@mailinator.com");
         goButton.click();
-        isMailBoxEmpty();
     }
 
     private void deleteMail() {
-        mailCheckboxes.get(0).click();
         deleteButton.click();
         new WebDriverWait(driver, 3)
                 .until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
-    }
-
-    private void isMailBoxEmpty(){
-        if (mails.size() > 0) {
-            mails.get(0).click();
-            driver.switchTo().frame(iFrame);
-            new WebDriverWait(driver, 3)
-                    .until(ExpectedConditions.visibilityOf(selectedCalculator));
-        } else {
-            System.out.println("Mail box is empty. There is nothing to calculate");
-            driver.quit();
-            System.exit(0);
-        }
     }
 }

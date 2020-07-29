@@ -54,7 +54,7 @@ public class IframeCalculator implements CalculatorInterface {
     @FindBy(xpath = "//td[@id='bt_pm']")
     private WebElement plsMnsButton;
 
-    public void closeBrowser() {
+    private void closeBrowser() {
         driver.quit();
     }
 
@@ -112,7 +112,19 @@ public class IframeCalculator implements CalculatorInterface {
     private Double calculation(double a, double b, char sign) {
         driver.switchTo().frame(iFrame);
         webCalculation(a);
-        switch (sign) {
+        signClick(sign);
+        if (b == 0.0) {
+            throw new ArithmeticException("You cannot divide by zero");
+        }
+        webCalculation(b);
+        userSignClick(calcButton);
+        double result = Double.parseDouble(resultField.getAttribute("value"));
+        closeBrowser();
+        return result;
+    }
+
+    private Character signClick(char userSign) {
+        switch (userSign) {
             case '+':
                 userSignClick(plusButton);
                 break;
@@ -126,13 +138,6 @@ public class IframeCalculator implements CalculatorInterface {
                 userSignClick(divideButton);
                 break;
         }
-        if (b == 0.0) {
-            throw new ArithmeticException("You cannot divide by zero");
-        }
-        webCalculation(b);
-        userSignClick(calcButton);
-        double result = Double.parseDouble(resultField.getAttribute("value"));
-        closeBrowser();
-        return result;
+        return userSign;
     }
 }

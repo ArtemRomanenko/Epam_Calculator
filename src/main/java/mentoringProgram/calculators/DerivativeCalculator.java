@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class DerivativeCalculator implements CalculatorInterface {
+    private WebDriver driver;
 
     public DerivativeCalculator() {
         WebDriverManager.chromedriver().setup();
@@ -18,8 +19,6 @@ public class DerivativeCalculator implements CalculatorInterface {
         startDriver();
         PageFactory.initElements(driver, this);
     }
-
-    private WebDriver driver;
 
     @FindBy(xpath = "//input[@id='expression']")
     private WebElement inputField;
@@ -30,7 +29,7 @@ public class DerivativeCalculator implements CalculatorInterface {
     @FindBy(xpath = "//div[@class = 'calc-math user-input-latex']")
     private WebElement resultField;
 
-    public void closeBrowser() {
+    private void closeBrowser() {
         driver.quit();
     }
 
