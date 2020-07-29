@@ -1,4 +1,7 @@
+package mentoringProgram.calculators;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
+import mentoringProgram.interfacePackage.CalculatorInterface;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -6,8 +9,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class GoogleCalculator implements CalculatorInterface {
-    
-
     private WebDriver driver;
 
     public GoogleCalculator() {
@@ -17,22 +18,14 @@ public class GoogleCalculator implements CalculatorInterface {
         PageFactory.initElements(driver, this);
     }
 
-    public void startDriver() {
-        driver.get("https://google.com");
-    }
-
     @FindBy(name = "q")
-    WebElement searchingField;
+    private WebElement searchingField;
 
     @FindBy(id = "cwos")
-    WebElement result;
+    private WebElement resultField;
 
-    public Double calculationMethod(Double firstDigit, Double secondDigit, String sign) {
-        searchingField.sendKeys(Double.toString(firstDigit));
-        searchingField.sendKeys(sign);
-        searchingField.sendKeys(Double.toString(secondDigit));
-        searchingField.submit();
-        return Double.parseDouble(result.getText());
+    private void closeBrowser() {
+        driver.quit();
     }
 
     @Override
@@ -56,7 +49,7 @@ public class GoogleCalculator implements CalculatorInterface {
     @Override
     public Double divide(Double x, Double y) {
         try {
-            if (y == 0) {
+            if (y == 0.0) {
                 throw new ArithmeticException();
             }
         } catch (Exception e) {
@@ -65,5 +58,19 @@ public class GoogleCalculator implements CalculatorInterface {
         }
         searchingField.clear();
         return calculationMethod(x, y, "/");
+    }
+
+    private void startDriver() {
+        driver.get("https://google.com");
+    }
+
+    private Double calculationMethod(Double firstDigit, Double secondDigit, String sign) {
+        searchingField.sendKeys(Double.toString(firstDigit));
+        searchingField.sendKeys(sign);
+        searchingField.sendKeys(Double.toString(secondDigit));
+        searchingField.submit();
+        double result = Double.parseDouble(resultField.getText());
+        closeBrowser();
+        return result;
     }
 }
